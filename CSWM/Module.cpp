@@ -2209,11 +2209,11 @@ void LoadWeapon(char *Directory, char *FileName)
 			case TYPE_INT: *(int *)(WeaponP + Param->Offset) = StrToInt(Value); break;
 			case TYPE_FLOAT: *(float *)(WeaponP + Param->Offset) = (float)atof(Value); break;
 			case TYPE_STRING: *(const char **)(WeaponP + Param->Offset) = STRING(ALLOC_STRING(Value)); break;
-			case TYPE_ARRAY: ReadWeaponArray((List<int> *)(WeaponP + Param->Offset, Value), Value); break;
+			case TYPE_ARRAY: ReadWeaponArray((List<int> *)(WeaponP + Param->Offset), Value); break;
 			case TYPE_STRINT: *(string_t *)(WeaponP + Param->Offset) = ALLOC_STRING(Value); break;
 			case TYPE_OTHER1: Weapon.Type = ReadWeaponType(Value); break;
 			case TYPE_OTHER2: ReadWeaponAttack2(Weapon, Value); break;
-			case TYPE_OTHER3: ReadWeaponAmmo(Weapon, Value);
+			case TYPE_OTHER3: ReadWeaponAmmo(Weapon, Value); break;
 		}
 	}
 
