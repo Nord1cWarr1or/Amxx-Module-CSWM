@@ -331,6 +331,7 @@ enum ParamType
 	TYPE_OTHER1,
 	TYPE_OTHER2,
 	TYPE_OTHER3,
+	TYPE_OTHER4,
 };
 
 enum ZoomType

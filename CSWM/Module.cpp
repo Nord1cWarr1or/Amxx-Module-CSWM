@@ -1884,10 +1884,7 @@ void ReadWeaponAttack2(CWeapon &Weapon, char *ValuePack)
 			GetAttack2Data(float, Weapon.A2V, WA2_SWITCH_DELAY) = FValue[12];
 			GetAttack2Data(float, Weapon.A2V, WA2_SWITCH_DAMAGE) = FValue[13];
 			GetAttack2Data(float, Weapon.A2V, WA2_SWITCH_RECOIL) = FValue[14];
-//			PRECACHE_SOUND(GetAttack2Data(const char *, Weapon.A2V, WA2_SWITCH_FSOUND) = STRING(ALLOC_STRING(SValue[15])));
-			char Buffer[260];
-			sprintf(Buffer, "sound/%s", GetAttack2Data(const char*, Weapon.A2V, WA2_SWITCH_FSOUND) = STRING(ALLOC_STRING(SValue[15])));
-			PRECACHE_GENERIC(STRING(ALLOC_STRING(Buffer)));
+			PRECACHE_SOUND(GetAttack2Data(const char *, Weapon.A2V, WA2_SWITCH_FSOUND) = STRING(ALLOC_STRING(SValue[15])));
 			break;
 		}
 		case A2_Burst:
@@ -1916,10 +1913,7 @@ void ReadWeaponAttack2(CWeapon &Weapon, char *ValuePack)
 			GetAttack2Data(int, Weapon.A2V, WA2_KNIFEATTACK_DAMAGE_MIN) = IValue[5];
 			GetAttack2Data(int, Weapon.A2V, WA2_KNIFEATTACK_DAMAGE_MAX) = IValue[6];
 			GetAttack2Data(float, Weapon.A2V, WA2_KNIFEATTACK_KNOCKBACK) = FValue[7];
-//			PRECACHE_SOUND(GetAttack2Data(const char *, Weapon.A2V, WA2_KNIFEATTACK_SOUND) = STRING(ALLOC_STRING(SValue[8])));
-			char Buffer[260];
-			sprintf(Buffer, "sound/%s", GetAttack2Data(const char*, Weapon.A2V, WA2_KNIFEATTACK_SOUND) = STRING(ALLOC_STRING(SValue[8])));
-			PRECACHE_GENERIC(STRING(ALLOC_STRING(Buffer)));
+			PRECACHE_SOUND(GetAttack2Data(const char *, Weapon.A2V, WA2_KNIFEATTACK_SOUND) = STRING(ALLOC_STRING(SValue[8])));
 			break;
 		}
 		case A2_InstaSwitch:
@@ -2020,6 +2014,8 @@ const CParam WeaponParams[] =
 	{ "GModel", TYPE_STRING, offsetof(CWeapon, GModel) },
 	{ "WeaponList", TYPE_STRING, offsetof(CWeapon, GModel) },
 	{ "FireSound", TYPE_STRING, offsetof(CWeapon, FireSound) },
+	{ "IdleAnim", TYPE_OTHER4, offsetof(CWeapon, AnimI) },
+	{ "Idle", TYPE_OTHER4, offsetof(CWeapon, AnimI) },
 	{ "Attack2", TYPE_OTHER2, 0 },
 	{ "WBody", TYPE_INT, offsetof(CWeapon, WBody) },
 	{ "WorldModelBody", TYPE_INT, offsetof(CWeapon, WBody) },
@@ -2214,6 +2210,7 @@ void LoadWeapon(char *Directory, char *FileName)
 			case TYPE_OTHER1: Weapon.Type = ReadWeaponType(Value); break;
 			case TYPE_OTHER2: ReadWeaponAttack2(Weapon, Value); break;
 			case TYPE_OTHER3: ReadWeaponAmmo(Weapon, Value); break;
+			case TYPE_OTHER4: *(int *)(WeaponP + Param->Offset) = StrToInt(Value); Weapon.Flags |= WFlag::CustomIdleAnim; break;
 		}
 	}
 
