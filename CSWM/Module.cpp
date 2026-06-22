@@ -169,6 +169,37 @@ void CheckAmmo(CAmmo &Ammo, int Index)
 	}
 }
 
+static void PrecacheModelSounds(string_t VModel)
+{
+	edict_t *InfoEdict = CREATE_ENTITY();
+	SET_MODEL(InfoEdict, STRING(VModel));
+	studiohdr_t *Studio = (studiohdr_t *)GET_MODEL_PTR(InfoEdict);
+	REMOVE_ENTITY(InfoEdict);
+
+	if (!Studio)
+		return;
+
+	mstudioseqdesc_t *SeqDesc = (mstudioseqdesc_t *)((uintptr_t)Studio + Studio->seqindex);
+
+	for (int index = 0; index < Studio->numseq; index++)
+	{
+		mstudioevent_t *Event = (mstudioevent_t *)((uintptr_t)Studio + SeqDesc[index].eventindex);
+
+		for (int i = 0; i < SeqDesc[index].numevents; i++)
+		{
+			if (Event[i].event != 5004)
+				continue;
+
+			if (Event[i].options[0] == '\0')
+				continue;
+
+			char SoundPath[260];
+			sprintf(SoundPath, "sound/%s", Event[i].options);
+			PRECACHE_GENERIC(STRING(ALLOC_STRING(SoundPath)));
+		}
+	}
+}
+
 void CheckWeapon(CWeapon &Weapon)
 {
 	char Buffer[260];
@@ -228,6 +259,8 @@ void CheckWeapon(CWeapon &Weapon)
 	}
 
 	PRECACHE_SOUND(Weapon.FireSound);
+
+	PrecacheModelSounds(Weapon.VModel);
 
 	if (!Weapon.AmmoID)
 	{
@@ -730,7 +763,6 @@ static cell AMX_NATIVE_CALL PrecacheWeaponModelSounds(AMX *AMX, cell *Params)
 			if (Event[i].options[0] == '\0')
 				continue;
 			
-//			PRECACHE_SOUND(Event[i].options);
 			sprintf(Buffer, "sound/%s", Event[i].options);
 			PRECACHE_GENERIC(STRING(ALLOC_STRING(Buffer)));
 		}
