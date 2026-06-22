@@ -1039,7 +1039,9 @@ edict_t *GiveWeaponByName(edict_t *PlayerEdict, const char *Name)
 
 	if (!NoError)
 	{
-		CLIENT_PRINTF(PlayerEdict, print_console, "Invalid weapon name.\n");
+		MESSAGE_BEGIN(MSG_ONE, 2, NULL, PlayerEdict);
+		WRITE_STRING("Invalid weapon name.\n");
+		MESSAGE_END();
 		return NULL;
 	}
 
@@ -1501,7 +1503,11 @@ static void Attack2_Switch(CBasePlayer *BasePlayer, CBasePlayerWeapon *BaseWeapo
 				= GetAttack2Data(float, Weapon.A2V, WA2_SWITCH_ANIM_A_DURATION);
 
 			if (!(Weapon.Flags & SwitchMode_NoText))
-				CLIENT_PRINT(PlayerEdict, print_center, "Switch to Mode B");
+			{
+				MESSAGE_BEGIN(MSG_ONE, 26, NULL, PlayerEdict);
+				WRITE_STRING("Switch to Mode B");
+				MESSAGE_END();
+			}
 
 			break;
 		}
@@ -1515,7 +1521,11 @@ static void Attack2_Switch(CBasePlayer *BasePlayer, CBasePlayerWeapon *BaseWeapo
 				= GetAttack2Data(float, Weapon.A2V, WA2_SWITCH_ANIM_B_DURATION);
 
 			if (!(Weapon.Flags & SwitchMode_NoText))
-				CLIENT_PRINT(PlayerEdict, print_center, "Switch to Mode B");
+			{
+				MESSAGE_BEGIN(MSG_ONE, 26, NULL, PlayerEdict);
+				WRITE_STRING("Switch to Mode A");
+				MESSAGE_END();
+			}
 
 			break;
 		}
