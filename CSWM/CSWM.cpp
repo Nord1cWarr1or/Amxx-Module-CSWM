@@ -1039,9 +1039,7 @@ edict_t *GiveWeaponByName(edict_t *PlayerEdict, const char *Name)
 
 	if (!NoError)
 	{
-		MESSAGE_BEGIN(MSG_ONE, 2, NULL, PlayerEdict);
-		WRITE_STRING("Invalid weapon name.\n");
-		MESSAGE_END();
+		ClientPrint(PlayerEdict, HUD_PRINTCONSOLE, "Invalid weapon name.\n");
 		return NULL;
 	}
 
@@ -1209,7 +1207,7 @@ void ClientCommand(edict_t *PlayerEdict)
 	const char *Command = CMD_ARGV(0);
 	int Result;
 	
-	if (!stricmp(Command, "give"))
+	if (!stricmp(Command, "cswm_give"))
 	{
 		if (*CVar_CheatsPointer)
 		{
